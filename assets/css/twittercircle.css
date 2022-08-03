@@ -1,0 +1,122 @@
+/*
+ * 13 February 2022
+ * An Interactive Animated Twitter Circle
+ * inspired by Temani's question
+ *
+ * ✔ responsive and interactive
+ * ✔ uses a single reference image (background-image)
+ * ✔ works with any Chirpty circle
+ *
+ */
+
+:root {
+  --size: 80vmin;
+  --duration: 60s;
+  --chirpty-output: url("https://user-images.githubusercontent.com/69895353/177832689-6cd99af2-8991-4780-85d0-b945d5f50740.png");
+  --me-size: 21.3%;
+}
+
+.circle-1 {
+  --circle-size: 51.3%;
+  --person-size: 24.7%;
+  --map: 22.9%;
+}
+
+.circle-2 {
+  --circle-size: 76%;
+  --person-size: 15%;
+  --map: 37.2%;
+}
+
+.circle-3 {
+  --circle-size: 98%;
+  --person-size: 9.1%;
+  --map: 48.3%;
+}
+.twitter-circle-div{
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.twitter-circle {
+  position: relative;
+  width: var(--size);
+  height: var(--size);
+}
+
+.circle {
+  left: 50%;
+  top: 50%;
+  width: var(--circle-size);
+  height: var(--circle-size);
+  z-index: var(--z);
+}
+
+.person {
+  --sgn: -1;
+  --angle: calc((360 / var(--n)) * var(--i) * 1deg);
+  --sgn-angle: calc(var(--angle) * -1);
+
+  left: calc(50% + var(--x) * (50% - (var(--person-size) * 0.5)));
+  top: calc(50% + var(--y) * (50% - (var(--person-size) * 0.5)));
+  width: var(--person-size);
+  height: var(--person-size);
+  background: var(--chirpty-output) scroll no-repeat
+    calc(50% + var(--cx) * var(--map)) calc(50% + var(--cy) * var(--map)) /
+    var(--size) var(--size);
+}
+
+.circle,
+.person,
+.me {
+  position: absolute;
+  transform: translate(-50%, -50%) rotate(0turn);
+  animation: rotate linear var(--duration) infinite;
+  border-radius: 50%;
+}
+
+.me {
+  --angle: 40deg;
+  left: 50%;
+  top: 50%;
+  animation: none;
+  width: var(--me-size);
+  height: var(--me-size);
+  background: var(--chirpty-output) scroll no-repeat center / var(--size)
+    var(--size);
+  z-index: 4;
+}
+
+.person,
+.me {
+  /* color: hsl(var(--angle), 80%, 60%); */
+  color: #fff;
+  transition: box-shadow ease 100ms;
+  transition-property: box-shadow;
+  box-shadow: 0 0 0 0, 0 0 2vmin 0 rgba(0, 0, 0, 0.4);
+  filter: grayscale(100%);
+}
+
+.person:focus,
+.me:focus,
+.person:hover,
+.me:hover {
+  box-shadow: 0 0 0 1vmin, 0 0 3vmin 0 rgba(0, 0, 0, 0.4);
+  filter: grayscale(0%);
+}
+
+@keyframes rotate {
+  to {
+    transform: translate(-50%, -50%) rotate(calc(1turn * var(--sgn, 1)));
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .circle,
+  .person,
+  .me {
+    animation: none;
+  }
+}
